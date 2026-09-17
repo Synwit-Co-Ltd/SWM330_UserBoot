@@ -420,8 +420,6 @@ typedef struct {
 #define SYS_ADCCR_IVREN_Msk			(0x01 << SYS_ADCCR_IVREN_Pos)
 #define SYS_ADCCR_IVRSEL_Pos		1		// ADC Internal Vref Select
 #define SYS_ADCCR_IVRSEL_Msk		(0x01 << SYS_ADCCR_IVRSEL_Pos)
-#define SYS_ADCCR_IVRTRIM_Pos		8		// ADC Internal Vref Level Trimming
-#define SYS_ADCCR_IVRTRIM_Msk		(0x1F << SYS_ADCCR_IVRTRIM_Pos)
 
 #define SYS_TEMPCR_EN_Pos			0
 #define SYS_TEMPCR_EN_Msk			(0x01 << SYS_TEMPCR_EN_Pos)
@@ -571,10 +569,8 @@ typedef struct {
 
 #define TIMR_IE_TO_Pos				0		// Time out
 #define TIMR_IE_TO_Msk				(0x01 << TIMR_IE_TO_Pos)
-#define TIMR_IE_OC0_Pos				1		// Output compare inversion point zero
-#define TIMR_IE_OC0_Msk				(0x01 << TIMR_IE_OC0_Pos)
-#define TIMR_IE_OC1_Pos				2		// Output compare inversion point one
-#define TIMR_IE_OC1_Msk				(0x01 << TIMR_IE_OC1_Pos)
+#define TIMR_IE_OC_Pos				1		// Output compare match interrupt
+#define TIMR_IE_OC_Msk				(0x01 << TIMR_IE_OC_Pos)
 #define TIMR_IE_ICR_Pos				3		// Input capture, rising edge interrupt
 #define TIMR_IE_ICR_Msk				(0x01 << TIMR_IE_ICR_Pos)
 #define TIMR_IE_ICF_Pos				4		// Input capture, falling edge interrupt
@@ -582,10 +578,8 @@ typedef struct {
 
 #define TIMR_IF_TO_Pos				0		// write 1 to clear
 #define TIMR_IF_TO_Msk				(0x01 << TIMR_IF_TO_Pos)
-#define TIMR_IF_OC0_Pos				1
-#define TIMR_IF_OC0_Msk				(0x01 << TIMR_IF_OC0_Pos)
-#define TIMR_IF_OC1_Pos				2
-#define TIMR_IF_OC1_Msk				(0x01 << TIMR_IF_OC1_Pos)
+#define TIMR_IF_OC_Pos				1
+#define TIMR_IF_OC_Msk				(0x01 << TIMR_IF_OC_Pos)
 #define TIMR_IF_ICR_Pos				3
 #define TIMR_IF_ICR_Msk				(0x01 << TIMR_IF_ICR_Pos)
 #define TIMR_IF_ICF_Pos				4
@@ -1547,66 +1541,30 @@ typedef struct {
 #define PWMG_START_PWM0_Msk			(0x01 << PWMG_START_PWM0_Pos)
 #define PWMG_START_PWM1_Pos			1
 #define PWMG_START_PWM1_Msk			(0x01 << PWMG_START_PWM1_Pos)
-#define PWMG_START_PWM2_Pos			2
-#define PWMG_START_PWM2_Msk			(0x01 << PWMG_START_PWM2_Pos)
-#define PWMG_START_PWM3_Pos			3
-#define PWMG_START_PWM3_Msk			(0x01 << PWMG_START_PWM3_Pos)
-#define PWMG_START_PWM4_Pos			4
-#define PWMG_START_PWM4_Msk			(0x01 << PWMG_START_PWM4_Pos)
 
 #define PWMG_SWBRK_PWM0A_Pos		0
 #define PWMG_SWBRK_PWM0A_Msk		(0x01 << PWMG_SWBRK_PWM0A_Pos)
 #define PWMG_SWBRK_PWM1A_Pos		1
 #define PWMG_SWBRK_PWM1A_Msk		(0x01 << PWMG_SWBRK_PWM1A_Pos)
-#define PWMG_SWBRK_PWM2A_Pos		2
-#define PWMG_SWBRK_PWM2A_Msk		(0x01 << PWMG_SWBRK_PWM2A_Pos)
-#define PWMG_SWBRK_PWM3A_Pos		3
-#define PWMG_SWBRK_PWM3A_Msk		(0x01 << PWMG_SWBRK_PWM3A_Pos)
-#define PWMG_SWBRK_PWM4A_Pos		4
-#define PWMG_SWBRK_PWM4A_Msk		(0x01 << PWMG_SWBRK_PWM4A_Pos)
 #define PWMG_SWBRK_PWM0B_Pos		8
 #define PWMG_SWBRK_PWM0B_Msk		(0x01 << PWMG_SWBRK_PWM0B_Pos)
 #define PWMG_SWBRK_PWM1B_Pos		9
 #define PWMG_SWBRK_PWM1B_Msk		(0x01 << PWMG_SWBRK_PWM1B_Pos)
-#define PWMG_SWBRK_PWM2B_Pos		10
-#define PWMG_SWBRK_PWM2B_Msk		(0x01 << PWMG_SWBRK_PWM2B_Pos)
-#define PWMG_SWBRK_PWM3B_Pos		11
-#define PWMG_SWBRK_PWM3B_Msk		(0x01 << PWMG_SWBRK_PWM3B_Pos)
-#define PWMG_SWBRK_PWM4B_Pos		12
-#define PWMG_SWBRK_PWM4B_Msk		(0x01 << PWMG_SWBRK_PWM4B_Pos)
 
 #define PWMG_RESET_PWM0_Pos			0
 #define PWMG_RESET_PWM0_Msk			(0x01 << PWMG_RESET_PWM0_Pos)
 #define PWMG_RESET_PWM1_Pos			1
 #define PWMG_RESET_PWM1_Msk			(0x01 << PWMG_RESET_PWM1_Pos)
-#define PWMG_RESET_PWM2_Pos			2
-#define PWMG_RESET_PWM2_Msk			(0x01 << PWMG_RESET_PWM2_Pos)
-#define PWMG_RESET_PWM3_Pos			3
-#define PWMG_RESET_PWM3_Msk			(0x01 << PWMG_RESET_PWM3_Pos)
-#define PWMG_RESET_PWM4_Pos			4
-#define PWMG_RESET_PWM4_Msk			(0x01 << PWMG_RESET_PWM4_Pos)
 
 #define PWMG_RELOADEN_PWM0_Pos		0
 #define PWMG_RELOADEN_PWM0_Msk		(0x01 << PWMG_RELOADEN_PWM0_Pos)
 #define PWMG_RELOADEN_PWM1_Pos		1
 #define PWMG_RELOADEN_PWM1_Msk		(0x01 << PWMG_RELOADEN_PWM1_Pos)
-#define PWMG_RELOADEN_PWM2_Pos		2
-#define PWMG_RELOADEN_PWM2_Msk		(0x01 << PWMG_RELOADEN_PWM2_Pos)
-#define PWMG_RELOADEN_PWM3_Pos		3
-#define PWMG_RELOADEN_PWM3_Msk		(0x01 << PWMG_RELOADEN_PWM3_Pos)
-#define PWMG_RELOADEN_PWM4_Pos		4
-#define PWMG_RELOADEN_PWM4_Msk		(0x01 << PWMG_RELOADEN_PWM4_Pos)
 
 #define PWMG_RESTART_PWM0_Pos		8
 #define PWMG_RESTART_PWM0_Msk		(0x01 << PWMG_RESTART_PWM0_Pos)
 #define PWMG_RESTART_PWM1_Pos		9
 #define PWMG_RESTART_PWM1_Msk		(0x01 << PWMG_RESTART_PWM1_Pos)
-#define PWMG_RESTART_PWM2_Pos		10
-#define PWMG_RESTART_PWM2_Msk		(0x01 << PWMG_RESTART_PWM2_Pos)
-#define PWMG_RESTART_PWM3_Pos		11
-#define PWMG_RESTART_PWM3_Msk		(0x01 << PWMG_RESTART_PWM3_Pos)
-#define PWMG_RESTART_PWM4_Pos		12
-#define PWMG_RESTART_PWM4_Msk		(0x01 << PWMG_RESTART_PWM4_Pos)
 
 #define PWMG_PULSE_EDGE0_Pos		0		// PWM_PULSE0 counting edge, 0 rising edge, 1 falling edge
 #define PWMG_PULSE_EDGE0_Msk		(0x01 << PWMG_PULSE_EDGE0_Pos)
@@ -2067,10 +2025,6 @@ typedef struct {
 #define QSPI_CR_SSHIFT_Msk			(0x01 << QSPI_CR_SSHIFT_Pos)
 #define QSPI_CR_BIDI_Pos			5		// Single line bidirectional mode: 0 IO0 as output, IO1 as input; 1 IO0 as input and output
 #define QSPI_CR_BIDI_Msk			(0x01 << QSPI_CR_BIDI_Pos)
-#define QSPI_CR_DUAL_Pos			6		// Dual Flash mode
-#define QSPI_CR_DUAL_Msk			(0x01 << QSPI_CR_DUAL_Pos)
-#define QSPI_CR_BANK_Pos			7		// QSPI Bank Select
-#define QSPI_CR_BANK_Msk			(0x01 << QSPI_CR_BANK_Pos)
 #define QSPI_CR_FFTHR_Pos			8		// FIFO Threshold, in indirect read  mode, when the number of data  in FIFO >= CR.FFTHR+1, SR.FFTHR set
 											//				   in indirect write mode, when the number of space in FIFO >= CR.FFTHR+1, SR.FFTHR set
 #define QSPI_CR_FFTHR_Msk			(0x0F << QSPI_CR_FFTHR_Pos)
@@ -2188,6 +2142,8 @@ typedef struct {
 
 #define SDIO_BLK_SIZE_Pos			0		// block size, 0x200 512 bytes, 0x400 1024 bytes
 #define SDIO_BLK_SIZE_Msk			(0xFFF << SDIO_BLK_SIZE_Pos)
+#define SDIO_BLK_DMA_SIZE_Pos		12		// DMA transfer buffer size, 0x0 4KB, 0x1 8KB, 0x2 16KB, ...
+#define SDIO_BLK_DMA_SIZE_Msk		(0x7 << SDIO_BLK_DMA_SIZE_Pos)
 #define SDIO_BLK_COUNT_Pos			16		// block count, 0 Stop Transfer, 1 1 block, 2 2 block, ...
 #define SDIO_BLK_COUNT_Msk			(0xFFF << SDIO_BLK_COUNT_Pos)
 
@@ -2269,15 +2225,15 @@ typedef struct {
 #define SDIO_IF_CMDCRCERR_Pos		17
 #define SDIO_IF_CMDCRCERR_Msk		(0x01 << SDIO_IF_CMDCRCERR_Pos)
 #define SDIO_IF_CMDENDERR_Pos		18
-#define SDIO_IF_CMDENDERR_Msk		(0x01 << SDIO_IF_CMDENDCERR_Pos)
+#define SDIO_IF_CMDENDERR_Msk		(0x01 << SDIO_IF_CMDENDERR_Pos)
 #define SDIO_IF_CMDIDXERR_Pos		19
-#define SDIO_IF_CMDIDXERR_Msk		(0x01 << SDIO_IF_CMDIDXCERR_Pos)
+#define SDIO_IF_CMDIDXERR_Msk		(0x01 << SDIO_IF_CMDIDXERR_Pos)
 #define SDIO_IF_DATTIMEOUT_Pos		20
 #define SDIO_IF_DATTIMEOUT_Msk		(0x01 << SDIO_IF_DATTIMEOUT_Pos)
 #define SDIO_IF_DATCRCERR_Pos		21
 #define SDIO_IF_DATCRCERR_Msk		(0x01 << SDIO_IF_DATCRCERR_Pos)
 #define SDIO_IF_DATENDERR_Pos		22
-#define SDIO_IF_DATENDERR_Msk		(0x01 << SDIO_IF_DATENDCERR_Pos)
+#define SDIO_IF_DATENDERR_Msk		(0x01 << SDIO_IF_DATENDERR_Pos)
 #define SDIO_IF_CURLIMERR_Pos		23
 #define SDIO_IF_CURLIMERR_Msk		(0x01 << SDIO_IF_CURLIMERR_Pos)
 #define SDIO_IF_CMD12ERR_Pos		24
@@ -2305,6 +2261,8 @@ typedef struct {
 #define SDIO_IE_CARDRMOV_Msk		(0x01 << SDIO_IE_CARDRMOV_Pos)
 #define SDIO_IE_CARD_Pos			8
 #define SDIO_IE_CARD_Msk			(0x01 << SDIO_IE_CARD_Pos)
+#define SDIO_IE_ERROR_Pos			15
+#define SDIO_IE_ERROR_Msk			(0x01 << SDIO_IE_ERROR_Pos)
 #define SDIO_IE_CMDTIMEOUT_Pos		16		// Command Timeout Error Status Enable
 #define SDIO_IE_CMDTIMEOUT_Msk		(0x01 << SDIO_IE_CMDTIMEOUT_Pos)
 #define SDIO_IE_CMDCRCERR_Pos		17		// Command CRC Error Status Enable
@@ -2346,6 +2304,8 @@ typedef struct {
 #define SDIO_IM_CARDRMOV_Msk		(0x01 << SDIO_IM_CARDRMOV_Pos)
 #define SDIO_IM_CARD_Pos			8
 #define SDIO_IM_CARD_Msk			(0x01 << SDIO_IM_CARD_Pos)
+#define SDIO_IM_ERROR_Pos			15
+#define SDIO_IM_ERROR_Msk			(0x01 << SDIO_IE_ERROR_Pos)
 #define SDIO_IM_CMDTIMEOUT_Pos		16
 #define SDIO_IM_CMDTIMEOUT_Msk		(0x01 << SDIO_IM_CMDTIMEOUT_Pos)
 #define SDIO_IM_CMDCRCERR_Pos		17
@@ -2449,6 +2409,8 @@ typedef struct {
 #define PSRAMC_CR0_InitLatency_Msk	(0x0F << PSRAMC_CR0_InitLatency_Pos)
 #define PSRAMC_CR0_MustAllBe1_Pos	8
 #define PSRAMC_CR0_MustAllBe1_Msk	(0x0F << PSRAMC_CR0_MustAllBe1_Pos)
+#define PSRAMC_CR0_DriveStrnth_Pos	12		// Drive Strength
+#define PSRAMC_CR0_DriveStrnth_Msk	(0x07 << PSRAMC_CR0_DriveStrnth_Pos)
 #define PSRAMC_CR0_PowerDown_Pos	15		// 1 Normal operation, 0 Writing 0 causes the device to enter Deep Power Down
 #define PSRAMC_CR0_PowerDown_Msk	(0x01 << PSRAMC_CR0_PowerDown_Pos)
 
@@ -3344,7 +3306,7 @@ typedef struct {
 	
 	__I  uint32_t SR;
 	
-	__O  uint32_t SWTRG;					// Software trigger
+		 uint32_t RESERVED;
 	
 	__IO uint32_t DHR;
 } DAC_TypeDef;
@@ -3352,10 +3314,12 @@ typedef struct {
 
 #define DAC_CR_EN_Pos				0
 #define DAC_CR_EN_Msk				(0x01 << DAC_CR_EN_Pos)
-#define DAC_CR_DMAEN_Pos			3
-#define DAC_CR_DMAEN_Msk			(0x01 << DAC_CR_DMAEN_Pos)
 #define DAC_CR_DHRFMT_Pos			9		// DHR Format, 0 12-bit data, DHR[11:0] => DOR[11:0]; 1 12-bit data, DHR[15:4] => DOR[11:0]; 3 8-bit data, DHR[7 :0] => DOR[11:4]
 #define DAC_CR_DHRFMT_Msk			(0x03 << DAC_CR_DHRFMT_Pos)
+#define DAC_CR_BUFOFF_Pos			11		// 0 buffer on, 1 buffer off
+#define DAC_CR_BUFOFF_Msk			(0x01 << DAC_CR_BUFOFF_Pos)
+#define DAC_CR_REFSEL_Pos			12		// reference select, 0 VDD, 1 Vrefp
+#define DAC_CR_REFSEL_Msk			(0x01 << DAC_CR_REFSEL_Pos)
 
 #define DAC_SR_DHRFULL_Pos			0		// 0 DHR not Full, can write now
 #define DAC_SR_DHRFULL_Msk			(0x01 << DAC_SR_DHRFULL_Pos)
@@ -3659,25 +3623,25 @@ typedef struct {
 
 #define RTC_TAMPER_ENA_Pos          0       // tamper detect enable
 #define RTC_TAMPER_ENA_Msk          (0x01 << RTC_TAMPER_ENA_Pos)
-#define RTC_TAMPER_POLAR_Pos        1
+#define RTC_TAMPER_POLAR_Pos        1		// 0 rise edge trigger tamper, 1 fall edge trigge tamper
 #define RTC_TAMPER_POLAR_Msk        (0x01 << RTC_TAMPER_POLAR_Pos)
-#define RTC_TAMPER_IE_Pos           2
+#define RTC_TAMPER_IE_Pos           2		// interrupt enable
 #define RTC_TAMPER_IE_Msk           (0x01 << RTC_TAMPER_IE_Pos)
 #define RTC_TAMPER_TSEN_Pos         7      // tamper gen timestamp enable
 #define RTC_TAMPER_TSEN_Msk         (0x01 << RTC_TAMPER_TSEN_Pos)
-#define RTC_TAMPER_SAMFREQ_Pos      8
+#define RTC_TAMPER_SAMFREQ_Pos      8		// tamper sample frequency, 0 1-time per second, 1 2/s, ..., 7 128/s
 #define RTC_TAMPER_SAMFREQ_Msk      (0x07 << RTC_TAMPER_SAMFREQ_Pos)
 #define RTC_TAMPER_FILTER_Pos       11
 #define RTC_TAMPER_FILTER_Msk       (0x03 << RTC_TAMPER_FILTER_Pos)
-#define RTC_TAMPER_PRECHG_Pos       13
+#define RTC_TAMPER_PRECHG_Pos       13		// Pull-up enable time prior to sampling. 0 1 RTCCLK period, 1 2 RTCCLK period, 2 4 RTCCLK period, 3 8 RTCCLK period
 #define RTC_TAMPER_PRECHG_Msk       (0x03 << RTC_TAMPER_PRECHG_Pos)
-#define RTC_TAMPER_PUPDIS_Pos       15
+#define RTC_TAMPER_PUPDIS_Pos       15		// Pull-up disable before sampling
 #define RTC_TAMPER_PUPDIS_Msk       (0x01 << RTC_TAMPER_PUPDIS_Pos)
-#define RTC_TAMPER_PIN_Pos          16
+#define RTC_TAMPER_PIN_Pos          16		// tamper pin, 0 RTC_GPIO
 #define RTC_TAMPER_PIN_Msk          (0x01 << RTC_TAMPER_PIN_Pos)
-#define RTC_TAMPER_TSPIN_Pos        17
+#define RTC_TAMPER_TSPIN_Pos        17		// timestamp trigger pin, 0 RTC_GPIO
 #define RTC_TAMPER_TSPIN_Msk        (0x01 << RTC_TAMPER_TSPIN_Pos)
-#define RTC_TAMPER_OUTPP_Pos        18
+#define RTC_TAMPER_OUTPP_Pos        18		// RTC_ALARM out type, 0 open-drain, 1 push-pull
 #define RTC_TAMPER_OUTPP_Msk        (0x01 << RTC_TAMPER_OUTPP_Pos)
 
 #define RTC_ALRMASS_SUBSEC_Pos      0
@@ -3694,6 +3658,8 @@ typedef struct {
 #define RTC_LVRCR_ENA_Msk      		(0x01 << RTC_LVRCR_ENA_Pos)
 #define RTC_LVRCR_LVL_Pos      		1
 #define RTC_LVRCR_LVL_Msk      		(0x03 << RTC_LVRCR_LVL_Pos)
+#define RTC_LVRCR_RSTST_Pos			4		// reset status, 1 = LVR reset occurred; write 1 to clear.
+#define RTC_LVRCR_RSTST_Msk			(0x01 << RTC_LVRCR_RSTST_Pos)
 
 #define RTC_X32KCR_ON_Pos           0
 #define RTC_X32KCR_ON_Msk           (0x01 << RTC_X32KCR_ON_Pos)
@@ -3996,17 +3962,23 @@ typedef struct {
 #endif
 
 
-static __INLINE void SW_DelayUS(uint32_t us)
+static __INLINE uint32_t SW_enter_critical(void)
 {
-	us = CyclesPerUs * us / 4;
+	uint32_t primask = __get_PRIMASK();
 	
-	for(int i = 0; i < us; i++) __NOP();
+	__disable_irq();
+	
+	return primask;
 }
 
-static __INLINE void SW_DelayMS(uint32_t ms)
+static __INLINE void SW_exit_critical(uint32_t primask)
 {
-	for(int i = 0; i < ms; i++) SW_DelayUS(1000);
+	__set_PRIMASK(primask);
 }
+
+
+#define SW_MIN(a, b)	((a) < (b) ? (a) : (b))
+#define SW_MAX(a, b)	((a) > (b) ? (a) : (b))
 
 
 #endif //__SWM330_H__

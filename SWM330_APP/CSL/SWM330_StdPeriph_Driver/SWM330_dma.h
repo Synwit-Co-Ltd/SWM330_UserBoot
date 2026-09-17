@@ -61,11 +61,11 @@ typedef struct {
 #define DMA_CH1_I2S0TX		(2 | DMA_HS_MRD)
 
 #define DMA_CH2_UART2TX		(0 | DMA_HS_MRD)
-#define DMA_CH2_QSPI0TX		(1 | DMA_HS_MWR)
+#define DMA_CH2_QSPI0TX		(1 | DMA_HS_MRD)
 #define DMA_CH2_I2S0TX		(2 | DMA_HS_MRD)
 
 #define DMA_CH3_UART3TX		(0 | DMA_HS_MRD)
-#define DMA_CH3_QSPI1TX		(1 | DMA_HS_MWR)
+#define DMA_CH3_QSPI1TX		(1 | DMA_HS_MRD)
 #define DMA_CH3_SPI0TX		(2 | DMA_HS_MRD)
 
 // memory write handshake signal

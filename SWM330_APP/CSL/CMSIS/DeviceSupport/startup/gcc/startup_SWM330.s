@@ -88,6 +88,8 @@ __isr_vector:
     .long    EXTI7_Handler
     .long    EXTI8_11_Handler
     .long    EXTI12_15_Handler
+    .long    XTALSTOP_Handler
+    .long    RDMA_Handler
 
 
 	.section .text.Reset_Handler
@@ -190,6 +192,8 @@ Reset_Handler:
     def_default_handler    EXTI7_Handler
     def_default_handler    EXTI8_11_Handler
     def_default_handler    EXTI12_15_Handler
+    def_default_handler    XTALSTOP_Handler
+    def_default_handler    RDMA_Handler
 
     def_default_handler    Default_Handler
 

@@ -43,7 +43,6 @@ void QSPI_Init(QSPI_TypeDef * QSPIx, QSPI_InitStructure * initStruct)
 	
 	QSPIx->CR = (1						<< QSPI_CR_TOEN_Pos)   |
 				(0						<< QSPI_CR_SSHIFT_Pos) |
-				(0						<< QSPI_CR_DUAL_Pos)   |
 				(8						<< QSPI_CR_FFTHR_Pos)  |
 				(initStruct->IntEn		<< QSPI_CR_ERRIE_Pos)  |
 				((initStruct->ClkDiv-1)	<< QSPI_CR_CLKDIV_Pos);
@@ -167,7 +166,11 @@ void QSPI_Erase_(QSPI_TypeDef * QSPIx, uint32_t addr, uint16_t block_size, uint8
 	case 4:
 		instruction = (AddressSize == QSPI_PhaseSize_32bit) ? QSPI_C4B_ERASE_SECTOR    : QSPI_CMD_ERASE_SECTOR;
 		break;
-	
+    
+	case 32:
+		instruction = (AddressSize == QSPI_PhaseSize_32bit) ? QSPI_C4B_ERASE_BLOCK32KB : QSPI_CMD_ERASE_BLOCK32KB;
+		break;
+    
 	case 64:
 		instruction = (AddressSize == QSPI_PhaseSize_32bit) ? QSPI_C4B_ERASE_BLOCK64KB : QSPI_CMD_ERASE_BLOCK64KB;
 		break;
@@ -562,6 +565,30 @@ uint32_t QSPI_ReadReg(QSPI_TypeDef * QSPIx, uint8_t cmd, uint8_t n_bytes)
 }
 
 
+void QSPI_ReadRegEx(QSPI_TypeDef * QSPIx, uint8_t cmd, uint8_t n_dummy, uint8_t *buffer, uint8_t n_bytes)
+{
+	QSPI_CmdStructure cmdStruct;
+	QSPI_CmdStructClear(&cmdStruct);
+	
+	cmdStruct.InstructionMode 	 = QSPI_PhaseMode_1bit;
+	cmdStruct.Instruction 		 = cmd;
+	cmdStruct.AddressMode 		 = QSPI_PhaseMode_None;
+	cmdStruct.AlternateBytesMode = QSPI_PhaseMode_None;
+	cmdStruct.DummyCycles 		 = n_dummy;
+	cmdStruct.DataMode 			 = QSPI_PhaseMode_1bit;
+	cmdStruct.DataCount 		 = n_bytes;
+	
+	QSPI_Command(QSPIx, QSPI_Mode_IndirectRead, &cmdStruct);
+	
+	for(int i = 0; i < n_bytes; i++)
+	{
+		while(QSPI_FIFOCount(QSPIx) < 1) __NOP();
+		
+		buffer[i] = QSPIx->DRB;
+	}
+}
+
+
 /*******************************************************************************************************************************
 * @brief	SPI Flash register write
 * @param	QSPIx is the QSPI to use
@@ -617,7 +644,7 @@ void QSPI_INTDis(QSPI_TypeDef * QSPIx, uint32_t it)
 /*******************************************************************************************************************************
 * @brief	QSPI interrupt flag clear
 * @param	QSPIx is the QSPI to set
-* @param	it is interrupt type, can be QSPI_IT_ERR, QSPI_IT_DONE, QSPI_IT_FFTHR, QSPI_IT_PSMAT, QSPI_IT_TO and their '|' operation
+* @param	it is interrupt type, can be QSPI_IT_ERR, QSPI_IT_DONE, QSPI_IT_PSMAT, QSPI_IT_TO and their '|' operation
 * @return
 *******************************************************************************************************************************/
 void QSPI_INTClr(QSPI_TypeDef * QSPIx, uint32_t it)

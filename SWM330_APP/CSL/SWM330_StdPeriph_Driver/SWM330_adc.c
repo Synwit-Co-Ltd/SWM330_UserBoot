@@ -47,6 +47,9 @@ void ADC_Init(ADC_TypeDef * ADCx, ADC_InitStructure * initStruct)
 	ADCx->CR |= (initStruct->samplAvg     << ADC_CR_AVG_Pos) |
 				((initStruct->clkdiv - 2) << ADC_CR_CKDIV_Pos);
 	
+	SYS->ADCCR &= ~(SYS_ADCCR_IVREN_Msk | SYS_ADCCR_IVRSEL_Msk);
+	SYS->ADCCR |= (initStruct->refsrc << SYS_ADCCR_IVREN_Pos);
+	
 	ADCx->IE = 0;
 	ADCx->IF = 0x3F3F3F3F;	// clear interrupt flag
 	

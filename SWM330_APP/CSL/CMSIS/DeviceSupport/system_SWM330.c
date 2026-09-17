@@ -127,6 +127,10 @@ void SystemInit(void)
 {
 	SYS->CLKEN1 |= (1 << SYS_CLKEN1_ANAC_Pos);
 	
+	__NOP(); __NOP(); __NOP(); __NOP(); __NOP();
+	
+	SYS->PWRCR = (SYS->PWRCR & (~0xF)) | 10;
+	
 	LDO_1V8_On(RTC_CLKSRC_LRC32K);	// Power for PSRAM and PE0-11, PE14, PA5 pin
 	
 	Flash_Param_at_xMHz(150);
@@ -321,6 +325,19 @@ void switchToXTAL_32K(void)
 	delay_3ms();
 
 	SYS->CLKSEL &=~(1 << SYS_CLKSEL_SYS_Pos);		//SYS <= XTAL_32K
+}
+
+
+void SW_DelayUS(uint32_t us)
+{
+	us = CyclesPerUs * us / 4;
+	
+	for(int i = 0; i < us; i++) __NOP();
+}
+
+void SW_DelayMS(uint32_t ms)
+{
+	for(int i = 0; i < ms; i++) SW_DelayUS(1000);
 }
 
 

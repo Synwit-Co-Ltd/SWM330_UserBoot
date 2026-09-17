@@ -20,10 +20,10 @@
 /*******************************************************************************************************************************
 * @brief	DAC init
 * @param	DACx is the DAC to init
-* @param	format is data format, can be DAC_FORMAT_LSB12B, DAC_FORMAT_MSB12B and DAC_FORMAT_8B
+* @param	initStruct is data used to init the DAC
 * @return
 *******************************************************************************************************************************/
-void DAC_Init(DAC_TypeDef * DACx, uint32_t format)
+void DAC_Init(DAC_TypeDef * DACx, DAC_InitStructure * initStruct)
 {
 	switch((uint32_t)DACx)
 	{
@@ -32,7 +32,9 @@ void DAC_Init(DAC_TypeDef * DACx, uint32_t format)
 		break;
 	}
 	
-	DACx->CR = (format << DAC_CR_DHRFMT_Pos);
+	DACx->CR = (initStruct->Format	  << DAC_CR_DHRFMT_Pos) |
+			   (initStruct->OutBuffer << DAC_CR_BUFOFF_Pos) |
+			   (initStruct->Vref	  << DAC_CR_REFSEL_Pos);
 }
 
 /*******************************************************************************************************************************

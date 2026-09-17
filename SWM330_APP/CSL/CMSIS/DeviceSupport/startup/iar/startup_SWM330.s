@@ -86,6 +86,8 @@ __vector_table
         DCD    EXTI7_Handler
         DCD    EXTI8_11_Handler
         DCD    EXTI12_15_Handler
+        DCD    XTALSTOP_Handler
+        DCD    RDMA_Handler
         
 
         THUMB
@@ -351,5 +353,15 @@ EXTI8_11_Handler
         SECTION .text:CODE:REORDER:NOROOT(1)
 EXTI12_15_Handler
         B EXTI12_15_Handler
+
+        PUBWEAK XTALSTOP_Handler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+XTALSTOP_Handler
+        B XTALSTOP_Handler
+
+        PUBWEAK RDMA_Handler
+        SECTION .text:CODE:REORDER:NOROOT(1)
+RDMA_Handler
+        B RDMA_Handler
 
         END

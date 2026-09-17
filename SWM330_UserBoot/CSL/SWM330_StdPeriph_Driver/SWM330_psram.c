@@ -31,9 +31,22 @@ void PSRAM_Init(PSRAM_InitStructure * initStruct)
 #ifndef PSRAM_XCCELA
 	*((__IO uint32_t *)(PSRAMC_BASE + 0x80)) = 0 | (1 << 16);	__ISB(); __NOP();
 	
-	uint16_t acc_cycles = initStruct->tACC / ns_per_cycle + 1;
-	if(acc_cycles < 8)		// when 4 Clock Latency, 4 * tPSRAM_CLK = 8 * tSYS_CLK
-		acc_cycles = 8;
+	uint8_t acc_cycles = initStruct->tACC / ns_per_cycle + 1;
+	if(acc_cycles & 1)
+		acc_cycles += 1;	// even number
+	if(acc_cycles < 6)
+		acc_cycles = 6;
+	
+	uint8_t init_latency;
+	switch(acc_cycles / 2)
+	{
+	case 3:	init_latency = 14;	break;
+	case 4: init_latency = 15;	break;
+	case 5: init_latency = 0;	break;
+	case 6: init_latency = 1;	break;
+	case 7: init_latency = 2;	break;
+	default: while(1) __NOP();	// not support
+	}
 	
 	PSRAMC->TR1US = CyclesPerUs;
 	
@@ -62,8 +75,9 @@ void PSRAM_Init(PSRAM_InitStructure * initStruct)
 	PSRAMC->CR0 = (3	<< PSRAMC_CR0_BurstLen_Pos)    |
 				  (1	<< PSRAMC_CR0_HybridBurst_Pos) |
 				  (0	<< PSRAMC_CR0_FixLatency_Pos)  |
-				  (0xF	<< PSRAMC_CR0_InitLatency_Pos) |	// 4 Clock Latency @ 100MHz Max Frequency
+				  (init_latency	<< PSRAMC_CR0_InitLatency_Pos) |
 				  (0xF	<< PSRAMC_CR0_MustAllBe1_Pos)  |
+				  (0	<< PSRAMC_CR0_DriveStrnth_Pos) |
 				  (1	<< PSRAMC_CR0_PowerDown_Pos);		// 1 Normal operation, 0 Writing 0 causes the device to enter Deep Power Down
 	
 	PSRAMC->CR1 = (1	<< PSRAMC_CR1_RefInterval_Pos) |
@@ -83,7 +97,7 @@ void PSRAM_Init(PSRAM_InitStructure * initStruct)
 	PSRAMC->TR1US = CyclesPerUs;
 	
 	PSRAMC->TR = ((4 - 1)							   << PSRAMC_TR_CPH_Pos) |
-				 ((initStruct->tCEM - 1) * CyclesPerUs << PSRAMC_TR_CEM_Pos) |
+				 (SW_MIN((initStruct->tCEM - 1) * CyclesPerUs, 0xFF) << PSRAMC_TR_CEM_Pos) |
 				 ((initStruct->tRC / ns_per_cycle - 1) << PSRAMC_TR_RC_Pos);
 	
 	/* APS6408L		tPU 	tRP		tRH		tRPH	tHSIN	tCSHS	tEXTHS	tDPDIN	tCSDPD	tEXTDPD

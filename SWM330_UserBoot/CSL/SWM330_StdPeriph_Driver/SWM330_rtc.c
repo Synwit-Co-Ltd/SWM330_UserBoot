@@ -57,7 +57,7 @@ void RTC_Init(RTC_TypeDef * RTCx, RTC_InitStructure * initStruct)
 	
 	RTCx->DR = ((initStruct->Date   % 10) << RTC_DR_DATE_Pos) |
 			   ((initStruct->Date   / 10) << RTC_DR_DATE10_Pos) |
-			   (calcWeekDay(initStruct->Year, initStruct->Month, initStruct->Date) << RTC_DR_DAY_Pos) |
+			   ((calcWeekDay(initStruct->Year, initStruct->Month, initStruct->Date) + 1) << RTC_DR_DAY_Pos) |
 			   ((initStruct->Month  % 10) << RTC_DR_MON_Pos) |
 			   ((initStruct->Month  / 10) << RTC_DR_MON10_Pos) |
 			   ((initStruct->Year   % 10) << RTC_DR_YEAR_Pos) |
@@ -95,6 +95,26 @@ void RTC_GetDateTime(RTC_TypeDef * RTCx, RTC_DateTime * dateTime)
 	dateTime->Hour = ((rtc_tr & RTC_TR_HOUR10_Msk) >> RTC_TR_HOUR10_Pos) * 10 + ((rtc_tr & RTC_TR_HOUR_Msk) >> RTC_TR_HOUR_Pos);
 	dateTime->Minute = ((rtc_tr & RTC_TR_MIN10_Msk) >> RTC_TR_MIN10_Pos) * 10 + ((rtc_tr & RTC_TR_MIN_Msk) >> RTC_TR_MIN_Pos);
 	dateTime->Second = ((rtc_tr & RTC_TR_SEC10_Msk) >> RTC_TR_SEC10_Pos) * 10 + ((rtc_tr & RTC_TR_SEC_Msk) >> RTC_TR_SEC_Pos);
+}
+
+/*******************************************************************************************************************************
+* @brief	get time and date from time-stamp register
+* @param	RTCx is the RTC to query
+* @param	dateTime is used to save obtained time and date
+* @return
+*******************************************************************************************************************************/
+void RTC_GetTimeStamp(RTC_TypeDef * RTCx, RTC_DateTime * dateTime)
+{
+	uint32_t ts_tr = RTCx->TSTR;
+	uint32_t ts_dr = RTCx->TSDR;
+	
+	dateTime->Month = ((ts_dr & RTC_TSDR_MON10_Msk) >> RTC_TSDR_MON10_Pos) * 10 + ((ts_dr & RTC_TSDR_MON_Msk) >> RTC_TSDR_MON_Pos);
+	dateTime->Date = ((ts_dr & RTC_TSDR_DATE10_Msk) >> RTC_TSDR_DATE10_Pos) * 10 + ((ts_dr & RTC_TSDR_DATE_Msk) >> RTC_TSDR_DATE_Pos);
+	dateTime->Day = (ts_dr & RTC_TSDR_DAY_Msk) >> RTC_TSDR_DAY_Pos;
+	dateTime->Hour = ((ts_tr & RTC_TSTR_HOUR10_Msk) >> RTC_TSTR_HOUR10_Pos) * 10 + ((ts_tr & RTC_TSTR_HOUR_Msk) >> RTC_TSTR_HOUR_Pos);
+	dateTime->Minute = ((ts_tr & RTC_TSTR_MIN10_Msk) >> RTC_TSTR_MIN10_Pos) * 10 + ((ts_tr & RTC_TSTR_MIN_Msk) >> RTC_TSTR_MIN_Pos);
+	dateTime->Second = ((ts_tr & RTC_TSTR_SEC10_Msk) >> RTC_TSTR_SEC10_Pos) * 10 + ((ts_tr & RTC_TSTR_SEC_Msk) >> RTC_TSTR_SEC_Pos);
+	dateTime->SubSecond = RTCx->TSSS;
 }
 
 /*******************************************************************************************************************************
@@ -230,7 +250,7 @@ void RTC_INTDis(RTC_TypeDef * RTCx, uint32_t it)
 *******************************************************************************************************************************/
 void RTC_INTClr(RTC_TypeDef * RTCx, uint32_t it)
 {
-	RTCx->SR |= ~(it << RTC_SR_ALRAF_Pos);
+	RTCx->SR &= ~(it << RTC_SR_ALRAF_Pos);
 }
 
 /*******************************************************************************************************************************

@@ -74,12 +74,14 @@ typedef struct {
 		} DC;
 		
 		struct {
-			uint16_t codeWord[162];
-			uint8_t  codeLen[162];
-			uint8_t  codeVal[162];
+			uint16_t codeWord[164];
+			uint8_t  codeLen[164];
+			uint8_t  codeVal[164];
 		} AC;
 	} HTable[JFIF_HTAB_MAX];
 	uint8_t HTableCnt;
+	
+	uint16_t RestartInterval;
 	
 	uint32_t CodeAddr;			// data to decode
 	uint32_t CodeLen;

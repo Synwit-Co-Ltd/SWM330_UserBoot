@@ -4,6 +4,7 @@
 
 typedef struct {
 	uint8_t  clkdiv;		// Sampling clock division, 2-17
+	uint8_t  refsrc;		// ADC_REF_VDD, ADC_REF_REFP, ADC_REF_2V4
 	uint8_t  samplAvg;		// Sampling averaging, can be ADC_AVG_SAMPLE1, ADC_AVG_SAMPLE2, ADC_AVG_SAMPLE4, ADC_AVG_SAMPLE8
 	
 	uint8_t  EOC_IEn;		// End of Conversion interrupt enable, can be ADC_SEQ0, ADC_SEQ1, ADC_SEQ2, ADC_SEQ3 and their '|' operation
@@ -45,6 +46,10 @@ typedef struct {
 #define ADC_SEQ1	0x2
 #define ADC_SEQ2	0x4
 #define ADC_SEQ3	0x8
+
+#define ADC_REF_REFP	(0)
+#define ADC_REF_VDD		(1 | (1 << 1))
+#define ADC_REF_2V4		(1 | (0 << 1))
 
 #define ADC_AVG_SAMPLE1			0
 #define ADC_AVG_SAMPLE2			1	// start one time, convert 2 times, and calculate the average of the two results as the conversion result

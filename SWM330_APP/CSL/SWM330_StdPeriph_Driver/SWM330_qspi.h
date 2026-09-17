@@ -67,6 +67,7 @@ typedef struct {
 
 
 #define QSPI_CMD_READ_JEDEC			0x9F
+#define QSPI_CMD_READ_UID			0x4B
 #define QSPI_CMD_FAST_READ			0x0B
 #define QSPI_CMD_FAST_READ_2bit		0x3B
 #define QSPI_CMD_FAST_READ_IO2bit	0xBB
@@ -100,6 +101,7 @@ typedef struct {
 #define QSPI_C4B_PAGE_PROGRAM		0x12
 #define QSPI_C4B_PAGE_PROGRAM_4bit	0x34
 #define QSPI_C4B_ERASE_SECTOR 		0x21
+#define QSPI_C4B_ERASE_BLOCK32KB	0x5C
 #define QSPI_C4B_ERASE_BLOCK64KB	0xDC
 
 
@@ -110,11 +112,11 @@ typedef struct {
 
 
 /* Interrupt Type */
-#define QSPI_IT_ERR   	(1 << QSPI_CR_ERR_Pos)
-#define QSPI_IT_DONE   	(1 << QSPI_CR_DONE_Pos)
-#define QSPI_IT_FFTHR	(1 << QSPI_CR_FFTHR_Pos)
-#define QSPI_IT_PSMAT	(1 << QSPI_CR_PSMAT_Pos)
-#define QSPI_IT_TO		(1 << QSPI_CR_TOIE_Pos)
+#define QSPI_IT_ERR   	QSPI_SR_ERR_Msk
+#define QSPI_IT_DONE   	QSPI_SR_DONE_Msk
+#define QSPI_IT_FFTHR	QSPI_SR_FFTHR_Msk
+#define QSPI_IT_PSMAT	QSPI_SR_PSMAT_Msk
+#define QSPI_IT_TO		QSPI_SR_TO_Msk
 
 
 
@@ -149,6 +151,7 @@ void QSPI_QuadSwitch(QSPI_TypeDef * QSPIx, uint8_t on);
 
 uint32_t QSPI_ReadReg(QSPI_TypeDef * QSPIx, uint8_t cmd, uint8_t n_bytes);
 void QSPI_WriteReg(QSPI_TypeDef * QSPIx, uint8_t cmd, uint32_t data, uint8_t n_bytes);
+void QSPI_ReadRegEx(QSPI_TypeDef * QSPIx, uint8_t cmd, uint8_t n_dummy, uint8_t *buffer, uint8_t n_bytes);
 
 #define QSPI_ReadJEDEC(QSPIx)			QSPI_ReadReg(QSPIx, QSPI_CMD_READ_JEDEC, 3)
 #define QSPI_WriteEnable(QSPIx)			QSPI_WriteReg(QSPIx, QSPI_CMD_WRITE_ENABLE, 0, 0)

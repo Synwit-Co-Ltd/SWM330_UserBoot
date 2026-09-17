@@ -72,6 +72,8 @@ void RTC_Init(RTC_TypeDef * RTCx, RTC_InitStructure * initStruct);
 
 void RTC_GetDateTime(RTC_TypeDef * RTCx, RTC_DateTime * dateTime);
 
+void RTC_GetTimeStamp(RTC_TypeDef * RTCx, RTC_DateTime * dateTime);
+
 void RTC_WakeupSetup(RTC_TypeDef * RTCx, uint16_t second, uint32_t int_en);
 
 void RTC_AlarmSetup(RTC_TypeDef * RTCx, uint32_t alarmx, RTC_AlarmStructure * alarmStruct);

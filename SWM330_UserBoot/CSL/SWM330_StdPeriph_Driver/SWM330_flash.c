@@ -33,13 +33,13 @@ uint32_t FLASH_Erase(uint32_t addr)
 {
 	if(addr % 1024 != 0) return FLASH_RES_ERR;
 	
-	__disable_irq();
+	uint32_t primask = SW_enter_critical();
 	
 	IAP_Flash_Erase(addr/1024, 0x0B11FFAC);
 	
 	FLASH_CacheClear();
 	
-	__enable_irq();
+	SW_exit_critical(primask);
 	
 	return FLASH_RES_OK;
 }
@@ -57,13 +57,13 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count)
 	if(addr % 16 != 0) return FLASH_RES_ERR;
 	if(count % 4 != 0) return FLASH_RES_ERR;
 	
-	__disable_irq();
+	uint32_t primask = SW_enter_critical();
 	
 	IAP_Flash_Write(addr, (uint32_t)buff, count/4, 0x0B11FFAC);
 	
 	FLASH_CacheClear();
 	
-	__enable_irq();
+	SW_exit_critical(primask);
 	
 	return FLASH_RES_OK;
 }
@@ -74,24 +74,30 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count)
 * @param	xMHz == SystemCoreClock / 1000000
 * @return
 *******************************************************************************************************************************/
+#if defined ( __ICCARM__ )
+__ramfunc
+#endif
 void Flash_Param_at_xMHz(uint32_t xMHz)
 {
-	__disable_irq();
+	uint32_t ns_per_cycle = 1000 / xMHz;
 	
-	IAP_Flash_ParamTAC(5, 0x0B11FFAC);
+	uint32_t primask = SW_enter_critical();
 	
-	IAP_Flash_Param(1000 / xMHz, 0x0B11FFAC);
+	__NOP();__NOP();__NOP();__NOP();__NOP();
+	__NOP();__NOP();__NOP();__NOP();__NOP();
+	
+	IAP_Flash_Param(ns_per_cycle, 0x0B11FFAC);
 	
 	if(xMHz < 48)
-		IAP_Flash_ParamTAC(0, 0x0B11FFAC);
-	else if(xMHz < 76)
 		IAP_Flash_ParamTAC(1, 0x0B11FFAC);
-	else if(xMHz < 102)
+	else if(xMHz < 76)
 		IAP_Flash_ParamTAC(2, 0x0B11FFAC);
-	else if(xMHz < 128)
+	else if(xMHz < 102)
 		IAP_Flash_ParamTAC(3, 0x0B11FFAC);
-	else if(xMHz < 152)
+	else if(xMHz < 128)
 		IAP_Flash_ParamTAC(4, 0x0B11FFAC);
+	else if(xMHz < 152)
+		IAP_Flash_ParamTAC(5, 0x0B11FFAC);
 	
-	__enable_irq();
+	SW_exit_critical(primask);
 }

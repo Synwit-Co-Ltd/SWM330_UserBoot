@@ -24,7 +24,7 @@ typedef struct {
 
 
 typedef struct {
-	uint32_t Address;
+	uint32_t Address;			// must be 4-byte aligned
 	uint32_t LineOffset;		// added at the end of each line to determine the starting address of the next line
 	uint8_t  ColorMode;			// DMA2D_FMT_ARGB888, DMA2D_FMT_RGB888, DMA2D_FMT_RGB565, ...
 	uint8_t  AlphaMode;			// DMA2D_AMODE_PIXEL, DMA2D_AMODE_ALPHA, DMA2D_AMODE_PMULA, ...
@@ -32,8 +32,8 @@ typedef struct {
 	uint32_t AlhpaAddr;			// used for DMA2D_AMODE_EXTERN mode, only suitable for foreground layer, Alpha values are stored in a separate storage area specified by AlphaAddr
 	
 	/* only for DMA2D_LAYER_OUT, not for DMA2D_LAYER_FG and DMA2D_LAYER_BG */
-	uint16_t LineCount;			// line per screen
-	uint16_t LinePixel;			// pixel per line
+	uint16_t LineCount;			// line per screen, must be even number when RGB565
+	uint16_t LinePixel;			// pixel per line, must be even number when RGB565
 } DMA2D_LayerSetting;
 
 
@@ -82,5 +82,7 @@ void DMA2D_INTDis(uint32_t it);
 void DMA2D_INTClr(uint32_t it);
 uint32_t DMA2D_INTStat(uint32_t it);
 
+
+void DMA2D_reset_state(void);
 
 #endif
