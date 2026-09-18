@@ -73,6 +73,7 @@ uint32_t FLASH_Write(uint32_t addr, uint32_t buff[], uint32_t count)
 * @brief	set Flash parameter to the parameter required for running at specified MHz.
 * @param	xMHz == SystemCoreClock / 1000000
 * @return
+* @note		This function must be executed in RAM. 此函数必须在 RAM 中执行。
 *******************************************************************************************************************************/
 #if defined ( __ICCARM__ )
 __ramfunc
@@ -98,6 +99,9 @@ void Flash_Param_at_xMHz(uint32_t xMHz)
 		IAP_Flash_ParamTAC(4, 0x0B11FFAC);
 	else if(xMHz < 152)
 		IAP_Flash_ParamTAC(5, 0x0B11FFAC);
+	
+	__NOP();__NOP();__NOP();__NOP();__NOP();
+	__NOP();__NOP();__NOP();__NOP();__NOP();
 	
 	SW_exit_critical(primask);
 }
